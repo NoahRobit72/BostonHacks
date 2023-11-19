@@ -26,3 +26,7 @@ We wanted to create a platform where users could take simple pictures with gener
 We hope you love our application as much as we do!
 
 If you have any suggestions, please feel free to reach out to us!
+
+
+## Technologies/APIs Used
+OpenAI, AsticaAI Vision, ElevenLabs Voice-Generation AI, FireBase Storage and Realtime Database, Netlify, React, Flask, Python
