@@ -9,32 +9,36 @@ export default function ImagerGet() {
     const { imageNumber } = useParams();
 
     const videoRef = useRef();
+    const vdio = videoRef.current;
 
     useEffect(() => {
-        const startWebcam = async () => {
-          try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            if (videoRef.current) {
-              videoRef.current.srcObject = stream;
-            }
-          } catch (error) {
-            console.error('Error accessing webcam:', error);
-          }
-        };
-    
-        startWebcam();
-    
-        // Cleanup function to stop the webcam when the component unmounts
-        return () => {
+      const startWebcam = async () => {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
           if (videoRef.current) {
-            const stream = videoRef.current.srcObject;
-            if (stream) {
-              const tracks = stream.getTracks();
-              tracks.forEach(track => track.stop());
-            }
+            videoRef.current.srcObject = stream;
           }
-        };
-      }, []); // Empty dependency array ensures that useEffect runs only once on component mount
+        } catch (error) {
+          console.error('Error accessing webcam:', error);
+        }
+      };
+  
+      startWebcam();
+  
+      // Cleanup function to stop the webcam when the component unmounts
+      return () => {
+        // eslint-disable-next-line
+        if (videoRef.current) {
+          // eslint-disable-next-line
+          const stream = videoRef.current.srcObject;
+          if (stream) {
+            const tracks = stream.getTracks();
+            tracks.forEach(track => track.stop());
+          }
+        }
+      };
+      // eslint-disable-next-line
+    }, []); // Empty dependency array ensures that useEffect runs only once on component mount
 
       function convertDataUrl(dataUrl) {
         // Split the input data URL into MIME type and base64-encoded data
@@ -47,12 +51,12 @@ export default function ImagerGet() {
       }
 
       const captureImage = () => {
-        if (videoRef.current) {
+        if (vdio) {
           const canvas = document.createElement('canvas');
-          canvas.width = videoRef.current.videoWidth;
-          canvas.height = videoRef.current.videoHeight;
+          canvas.width = vdio.videoWidth;
+          canvas.height = vdio.videoHeight;
           const context = canvas.getContext('2d');
-          context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+          context.drawImage(vdio, 0, 0, canvas.width, canvas.height);
       
           // Now, 'canvas.toDataURL()' contains the captured image as a Base64-encoded string
           const imageDataUrl = canvas.toDataURL(); // Do not specify image format
@@ -62,7 +66,7 @@ export default function ImagerGet() {
           const imageRef = ref(storage,pathToSend);
           //
           uploadString(imageRef, newUrl, 'data_url').then(() => {
-            alert("image uploaded")
+            console.log('finished');
           })
 
           const fetchString = `http://127.0.0.1:5000/getImage?imageName=Canvas${imageNumber}`;
