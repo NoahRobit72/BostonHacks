@@ -11,7 +11,7 @@ from firebase_admin import db
 
 
 
-client = OpenAI(api_key="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")
+client = OpenAI(api_key="YOUR KEY HERE")
 
 
 
