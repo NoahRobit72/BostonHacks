@@ -5,9 +5,9 @@ import base64
 import json
 import requests
 
-client = OpenAI(api_key = "YOUR API KEY HERE")          #openai key
+client = OpenAI(api_key = "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")          #openai key
 
-asticaAPI_key = 'YOUR API KEY HERE'  # visit https://astica.ai      #astica key
+asticaAPI_key = '3C26599C-C1D6-448D-A877-43CCBD40AD6E328AF6B0-10CC-4144-BEB7-F599FDA85761'  # visit https://astica.ai      #astica key
 asticaAPI_timeout = 25 # in seconds. "gpt" or "gpt_detailed" require increased timeouts
 asticaAPI_endpoint = 'https://vision.astica.ai/describe'
 asticaAPI_modelVersion = '2.1_full' # '1.0_full', '2.0_full', or '2.1_full'
@@ -102,28 +102,29 @@ def chatWithChat(query):
    response_text = response.choices[0].message.content
    return response_text
    
+# Originally main
 def main():
-  filename = "image.jpg"
-  asticaAPI_input = get_image_base64_encoding(filename)
-  
-  # Define payload dictionary
-  asticaAPI_payload = {
-    'tkn': asticaAPI_key,
-    'modelVersion': asticaAPI_modelVersion,
-    'visionParams': asticaAPI_visionParams,
-    'input': asticaAPI_input,
-  }
-  # call API function and store result
-  asticaAPI_result = asticaAPI(asticaAPI_endpoint, asticaAPI_payload, asticaAPI_timeout)
-  query = "Give me random name(s) (first and last), age group(s) (child, teen, adult, or senior), gender(s) (man/woman), object name(s) (e.g. balloon, water bottle), personality attributes (e.g. charismatic, pessimistic), and appearance(s) for each of the following inanimate objects while also not changing them to humans: "
-  for i in range(len(asticaAPI_result['objects'])):
-    query = query + asticaAPI_result['objects'][i]['name'] + " "
-  query = query + ". Use the following caption to help decide their personality. "
-  query = query + asticaAPI_result['caption']['text']
-  query = query + " Then, formulate a beginning prompt for a story speaking from the narrator's perspective using the objects as characters. "
-  response_text = chatWithChat(query)       # query is what you are asking chatgpt
-  print(response_text)
-  
+    filename = "image.jpg" # USER'S WEBCAM CAPTURE GOES HERE
+    asticaAPI_input = get_image_base64_encoding(filename)
+    
+    # Define payload dictionary
+    asticaAPI_payload = {
+        'tkn': asticaAPI_key,
+        'modelVersion': asticaAPI_modelVersion,
+        'visionParams': asticaAPI_visionParams,
+        'input': asticaAPI_input,
+    }
+    # call API function and store result
+    asticaAPI_result = asticaAPI(asticaAPI_endpoint, asticaAPI_payload, asticaAPI_timeout)
+    query = "Give me random name(s) (first and last), age group(s) (child, teen, adult, or senior), gender(s) (man/woman), object name(s) (e.g. balloon, water bottle), personality attributes (e.g. charismatic, pessimistic), and appearance(s) for each of the following inanimate objects while also not changing them to humans: "
+    for i in range(len(asticaAPI_result['objects'])):
+        query = query + asticaAPI_result['objects'][i]['name'] + " "
+    query = query + ". Use the following caption to help decide their personality. "
+    query = query + asticaAPI_result['caption']['text']
+    query = query + " Then, formulate a beginning prompt for a story speaking from the narrator's perspective using the objects as characters. "
+    response_text = chatWithChat(query)       # query is what you are asking chatgpt
+    print(response_text)
+    return response_text
 
 if __name__ == "__main__":
     main()
