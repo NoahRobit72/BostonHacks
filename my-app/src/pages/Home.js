@@ -20,7 +20,7 @@ export default function Home() {
     };
 
     return (
-        <div className="container">
+        <div>
             <h1>Hi! This is Canvas Chronicles!</h1>
                 <Link to={`/imageget/${randomNumber}`} onClick={handleLinkClick}>
                 Click here to turn a simple drawing or illustration into a captivating full story for kids.
