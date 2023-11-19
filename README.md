@@ -6,7 +6,7 @@ With out applicaiton, users simply can upload a picture of their choice. After t
 
 First our application picts through the image and find the objects in the image. Then, it gives each object a personality and creates a story based on the objects!
 
-Try it out for yourself here! [Canvas Chronicles](https://canvaschronicles.herokuapp.com/)
+Try it out for yourself here! [Canvas Chronicles](canvaschronicles.netlify.app)
 
 ##Extra Implementation
 There were some aspects of the project that we were not able to fully complete. Each individual character created was going to have their own voice based off of their personalities and genders. There are several examples 
