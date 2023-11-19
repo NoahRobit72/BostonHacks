@@ -30,3 +30,7 @@ If you have any suggestions, please feel free to reach out to us!
 
 ## Technologies/APIs Used
 OpenAI, AsticaAI Vision, ElevenLabs Voice-Generation AI, FireBase Storage and Realtime Database, Netlify, React, Flask, Python
+
+
+![diagram](./diagram.jpg)
+
