@@ -13,8 +13,8 @@ function App() {
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/imageget" element={<ImageGet />} />
-      <Route path="/textshow" element={<TextShow />} />
+      <Route path="/imageget/:imageNumber" element={<ImageGet />} />
+      <Route path="/textshow/:imageNumber" element={<TextShow />} />
     </Routes>
   </BrowserRouter>
   );

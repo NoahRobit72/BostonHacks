@@ -1,13 +1,14 @@
 // This page will get the picture of the user
-import { Link } from "react-router-dom";
-import React, { useRef, useEffect, useState} from 'react';
+import { Link, useParams} from "react-router-dom";
+import React, { useRef, useEffect} from 'react';
 
 import {storage} from "../firebase_setup/firebase";
 import {ref, uploadString} from "firebase/storage";
 
 export default function ImagerGet() {
+    const { imageNumber } = useParams();
+
     const videoRef = useRef();
-    const [capturedImageValue, setCapturedImage] = useState(null);
 
     useEffect(() => {
         const startWebcam = async () => {
@@ -37,7 +38,7 @@ export default function ImagerGet() {
 
       function convertDataUrl(dataUrl) {
         // Split the input data URL into MIME type and base64-encoded data
-        const [prefix, data] = dataUrl.split(',');
+        const [, data] = dataUrl.split(',');
       
         // Create the new data URL with a different MIME type
         const newTextDataUrl = `data:text/plain;base64,${data}`;
@@ -57,21 +58,35 @@ export default function ImagerGet() {
           const imageDataUrl = canvas.toDataURL(); // Do not specify image format
           const newUrl = convertDataUrl(imageDataUrl);
           console.log(newUrl);
-          const imageRef = ref(storage,'images/image2');
+          const pathToSend = `images/Canvas${imageNumber}`;
+          const imageRef = ref(storage,pathToSend);
+          //
           uploadString(imageRef, newUrl, 'data_url').then(() => {
             alert("image uploaded")
           })
-          setCapturedImage(imageDataUrl);
-        }
-      };
 
+          const fetchString = `http://127.0.0.1:5000/getImage?imageName=Canvas${imageNumber}`;
+
+          // Fetch code
+          var requestOptions = {
+            method: 'POST',
+            redirect: 'follow'
+          };
+
+          fetch(fetchString, requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));
+              }
+      };
     return (
         <div>
             <h1>Canvas Chronicles</h1>
+            <p>Random Number: {imageNumber}</p>
             <div>
                 <video ref={videoRef} autoPlay />
             </div>
-            <Link to="/textshow" onClick={captureImage}>Capture</Link>
+            <Link to={`/textshow/${imageNumber}`} onClick={captureImage}>Capture</Link>
             <br></br>
             <Link to="/">go back</Link>
       </div>
