@@ -43,7 +43,6 @@ def processImage():
     # List of individual characters
     objectChars = partitionedOutput[0].split("\n\n") # Might have an extra useless entry
     objectChars = objectChars[0:len(objectChars)-1]
-    #print(objectChars)
 
     # Loop through the first partition (the identified objects)
     characterCount = 0
@@ -55,9 +54,6 @@ def processImage():
 
     # Print the current character's attributes and have the character introduce themself
     for character in finalizedChars:
-        #print("The current character's attributes are:")
-        #print(character.name,'/',character.gender,'/',character.ageGroup,'/',character.personality,'/',character.appearance,'/',character.voice)
-        #print()
         assignCharVoice(character)
         #Uncomment when voice is wanted
         '''testAudio = generate(
@@ -67,7 +63,11 @@ def processImage():
         play(testAudio)'''
         
 if __name__ == "__main__":
-    t = time.process_time()
+    start = time.time()
+    print("hello")
+
     processImage()
     generateStory(finalizedChars)
-    elapsed_time = time.process_time() - t
+
+    end = time.time()
+    print(end - start,"seconds")

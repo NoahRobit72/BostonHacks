@@ -5,8 +5,8 @@ from ObjectChar import *
 # Voice/Narration; Note: Need to install ffmpeg
 from elevenlabs import set_api_key
 from elevenlabs import voices
-from elevenlabs import generate
-from elevenlabs import play
+#from elevenlabs import generate
+#from elevenlabs import play
 import random
 
 # Set API Keys

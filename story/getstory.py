@@ -1,23 +1,23 @@
 import os
 from openai import OpenAI
 from getVoices import *
+from elevenlabs import *
 from ObjectChar import *
+from mergeAudio import *
 
 client = OpenAI(api_key="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")
 
-background = """You are extraordinary at making captivating narratives in many genres, and as the creator of this immersive play, you shall craft a splendid interactive play in collaboration with the user.
-	This story should also be intended to be read by children.
+background = """
+    Limit the tokens for the response to 300 after the supplied beginning prompt.
+	You are collaborativly creating an immersive play with the user.
+	This story is intended to be read by children.
     Conclude each message with a request for open-ended input from the user, inviting them to actively contribute to the evolving storyline.
     Each paragraph must start with narrator if a character is not speaking.
-	Designate each line with the corresponding character's name when engaged in dialogue, absolutely marking and distinguishing the Narrator when providing overarching commentary.
 	Ensure a seamless transition between lines, initiating each segment with the relevant character's name or the Narrator as appropriate.
-	Ensure that each paragraph is in the following style "[Character Name]: [Character Dialogue]."
-    Do NOT include character dialogue in Narrator paragraphs. ONLY include them in their own paragraphs.
+	ABSOLUTELY ENSURE that each paragraph is in the following style "CHARACTER NAME: [CHARACTER DIALOGUE]."
 	Maintain the integrity of the narrative by disregarding any extraneous responses that could disrupt the seamless flow of the unfolding tale.
     Should the user's input lack coherence or fail to align with the narrative possibilities, tactfully bypass the incongruity and proceed with the storyline.
-    Keep each section of the story to only a minimum number of lines of dialogue and do not make it too long.
-	Limit the response to 200 tokens only.
-    You must end the last paragraph with a period to create a full sentence.
+    Keep the story to a minimum number of lines of dialogue and KEEP IT SHORT.
 
     You will use the following characters in the story, and reiterate the following prompt as the beginning of the story:
     Characters: {
@@ -58,7 +58,7 @@ def startStory(history):
     response = client.chat.completions.create(                          # Get response
         model="gpt-3.5-turbo",
         messages=[{"role": "system", "content": background}]+history,   # Sends background to get start of story
-        max_tokens=500,                                                 # Max length of message
+        max_tokens=750,                                                 # Max length of message
     )
 
     response_text = response.choices[0].message.content
@@ -112,7 +112,7 @@ def generateStory(characters):
 
     Narrator: As they continued to soar through the sky, Benjamin and Amelia marveled at the world below. They passed over towering mountains, where snow-capped peaks reached for the heavens. They
     """
-    response, text = startStory(history)
+    response, text = startStory(history)        # Text is the raw response text
 
     readStory(characters, text)
     '''
@@ -122,19 +122,18 @@ def generateStory(characters):
         history = history + response                        # Build history
         print(f"The history is \n {history}")               # Print history
     '''
-        
+
+audioFiles = []
 def readStory(characters, text):
     charVoiceDict = {}
     # Store character voices in a dictionary instead of a list for faster retrieval
     for character in characters:
         charVoiceDict[character.name] = character.voice.name
-        #print(charVoiceDict[character.name])
-    #print()
-    #print(characters)
 
     # Instantitate the narrator
     narrator = ObjectChar("Narrator","Woman","DoesItMatter?","WhyDoYouCare?","You'reAwfullyCurious","Ella - Narrator")
     
+    ii = 0
     splitText = text.split("\n\n")                      # Split text into sections; list of sections
     for section in splitText:
         sectionComponents = section.partition(":")      # Partition section into names and dialogue (separated by colon)
@@ -149,16 +148,31 @@ def readStory(characters, text):
         '''
         currCharName = sectionComponents[0]             # Current character name
         currCharDialogue = sectionComponents[2]         # Current character dialogue
-        '''currAudio = generate(
+        if (currCharName == "Narrator" or currCharDialogue == ""):
+            currAudio = generate(                       # Audio bytes
+            text = currCharDialogue,                    # The text is just narrator text
+            voice = narrator.voice                      # So set the voice to the narrator
+            )
+            #play(currAudio)
+
+            ii+=1
+            save(currAudio,f"audioFile{ii}.wav")        # Save audio bytes into .wav
+            audioFiles.append(f"audioFile{ii}.wav")     # Add filename to audioFiles list
+            continue
+        currAudio = generate(
             text = currCharDialogue,                    
             voice = charVoiceDict[currCharName]         # Set the voice to the voice at the sepcified dictionary entry
         )
-        play(currAudio)
-        '''
-        #print(currCharName, '/', currCharDialogue)
-        #print()
-    for line in splitText:
-        print(line)
+        #play(currAudio)
+
+        ii+=1
+        save(currAudio,f"audioFile{ii}.wav")            # Save audio bytes into .wav
+        audioFiles.append(f"audioFile{ii}.wav")         # Add filename to audioFiles list
+
+    for line in splitText:                              # Console text output
+        print(line,"\n")
+    
+    combinedAudio = mergeAudio(audioFiles)
 
 if __name__ == "__main__":
     generateStory()
