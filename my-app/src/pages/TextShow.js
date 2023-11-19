@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { getDatabase, ref, child, get } from "firebase/database";
+
 
 const YourComponent = () => {
   const [pollingInProgress, setPollingInProgress] = useState(true);
   const [status, setStatus] = useState(''); // State to store the status received from the server
+  const [successData, setSuccessData] = useState(null);
+
 
   const pollForImage = useCallback(async () => {
     try {
@@ -27,7 +31,18 @@ const YourComponent = () => {
   }, [status]); // Include status as a dependency
 
   const handleSuccess = () => {
-    // Your logic for handling success, e.g., calling another function
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, 'Canvas641')).then((snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        setSuccessData(data); // Save the data to state
+        console.log(data);
+      } else {
+        console.log("No data available");
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
     console.log('Handling success...');
   };
 
@@ -55,6 +70,7 @@ const YourComponent = () => {
           }
         })()}
       </p>
+      {successData && <p>Success Data: {successData}</p>}
     </div>
   );
 };
