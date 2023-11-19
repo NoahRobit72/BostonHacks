@@ -9,15 +9,12 @@ from elevenlabs import generate
 from elevenlabs import play
 import random
 
-
-
 # Set API Keys
 client = OpenAI(api_key="YOURAPIKEY")
 set_api_key("4302f309c82a5e2b4d157ed4d2ee7d3c") # SWITCH OUT WITH "YOUR APIKEY HERE"
 
-
-
-voices = voices() # Save the voices available to use via the ElevenLabs API
+# Save the voices available to use via the ElevenLabs API
+voices = voices() 
 maleVoices = []
 femaleVoices = []
 # Sort voices into male and female voices
@@ -26,8 +23,8 @@ for voice in voices:
         maleVoices.append(voice)
     else:
         femaleVoices.append(voice)
-
-
+#print(maleVoices)
+#print(femaleVoices)
 
 def selectVoice(charGender):
     '''Randomly return a gender-specific voice out of available voices'''
@@ -42,6 +39,38 @@ def selectVoice(charGender):
         femaleVoices.remove(femaleVoices[randomIndex])
         return selectedVoice
     
+def setCharacter(character):
+    '''Create ObjectChar objects to store the gpt-generated characters'''
+    finalCharacter = ObjectChar("n/a", "n/a", "n/a", "n/a", "n/a", "n/a",) # An empty character to-be-filled
+    charAttributes = character.split("\n")
+
+    for attribute in charAttributes:
+        attribute = attribute.strip(" ")
+        attributeCategory = attribute.partition(":")[0]
+        attributeValue = attribute.partition(":")[2].strip()
+
+        # Rename the gpt-generated categories to names that match ObjectChar class variables
+        if (attributeCategory == "Name"):
+            attributeCategory = "name"
+        elif (attributeCategory == "Age Group"):
+            attributeCategory = "ageGroup"
+        elif (attributeCategory == "Gender"):
+            attributeCategory = "gender"
+        elif (attributeCategory == "Personality"):
+            attributeCategory = "personality"
+        elif (attributeCategory == "Appearance"):
+            attributeCategory = "appearance"
+
+        setattr(finalCharacter,attributeCategory,attributeValue)
+
+    return finalCharacter  
+
+def assignCharVoice(character):
+    '''Assign a voice to an input character'''
+    charGender = character.gender # Man or Woman
+    character.voice = selectVoice(charGender)
+
+
 
 ''' Helpful reminders with AI-voice API'''
     #testVoice = selectVoice("Male")
