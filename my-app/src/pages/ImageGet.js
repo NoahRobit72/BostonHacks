@@ -68,7 +68,7 @@ export default function ImagerGet() {
           const imageRef = ref(storage,pathToSend);
           //
           uploadString(imageRef, newUrl, 'data_url').then(() => {
-            alert('finished');
+            console.log('finished');
           })
 
           const fetchString = `http://127.0.0.1:5000/getImage?imageName=Canvas${imageNumber}`;
