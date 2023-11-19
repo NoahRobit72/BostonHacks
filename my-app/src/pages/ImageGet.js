@@ -1,15 +1,13 @@
 // This page will get the picture of the user
 import { Link } from "react-router-dom";
 import React, { useRef, useEffect, useState} from 'react';
-import { ref, uploadString } from "firebase/storage";
-import { storage } from '../firebase_setup/firebase';
 
-const storageRef = ref(storage, 'some-child');
-
+import {storage} from "../firebase_setup/firebase";
+import {ref, uploadString} from "firebase/storage";
 
 export default function ImagerGet() {
     const videoRef = useRef();
-    const [capturedImage, setCapturedImage] = useState(null);
+    const [capturedImageValue, setCapturedImage] = useState(null);
 
     useEffect(() => {
         const startWebcam = async () => {
@@ -37,6 +35,16 @@ export default function ImagerGet() {
         };
       }, []); // Empty dependency array ensures that useEffect runs only once on component mount
 
+      function convertDataUrl(dataUrl) {
+        // Split the input data URL into MIME type and base64-encoded data
+        const [prefix, data] = dataUrl.split(',');
+      
+        // Create the new data URL with a different MIME type
+        const newTextDataUrl = `data:text/plain;base64,${data}`;
+      
+        return newTextDataUrl;
+      }
+
       const captureImage = () => {
         if (videoRef.current) {
           const canvas = document.createElement('canvas');
@@ -47,22 +55,15 @@ export default function ImagerGet() {
       
           // Now, 'canvas.toDataURL()' contains the captured image as a Base64-encoded string
           const imageDataUrl = canvas.toDataURL(); // Do not specify image format
-          console.log(imageDataUrl);
+          const newUrl = convertDataUrl(imageDataUrl);
+          console.log(newUrl);
+          const imageRef = ref(storage,'images/image1');
+          uploadString(imageRef, newUrl, 'data_url').then(() => {
+            alert("image uploaded")
+          })
           setCapturedImage(imageDataUrl);
         }
       };
-
-      const handleLinkClick = () => {
-        captureImage();
-        console.log(capturedImage);
-        console.log('Link clicked!'); // button clicked
-
-        uploadString(storageRef, capturedImage, 'base64url').then((snapshot) => {
-            console.log('Uploaded a base64url string!');
-          });
-        console.log("send to database"); 
-      };
-    
 
     return (
         <div>
@@ -70,7 +71,7 @@ export default function ImagerGet() {
             <div>
                 <video ref={videoRef} autoPlay />
             </div>
-            <Link to="/textshow" onClick={handleLinkClick}>Capture</Link>
+            <Link to="/textshow" onClick={captureImage}>Capture</Link>
             <br></br>
             <Link to="/">go back</Link>
       </div>
