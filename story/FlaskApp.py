@@ -31,7 +31,7 @@ Appearance: Shiny red with a confident aura
 Beginning Prompt:
 On a small wooden table, a diverse group of fruits gathered. Benjamin Banana, the cheerful adult, and Amelia Apple, the ambitious teenager, stood side by side, among others who were yet to be named. Their vibrant colors and distinct personalities made each fruit unique, just like their presence around the table. As the narrator, I couldn't help but wonder what adventures awaited these fruits beyond the confines of this ordinary setting. Little did they know that fate had something extraordinary in store for them. It all started when a mischievous wind blew open the window, setting the stage for an unexpected journey that would forever change their lives."""
 
-    
+
 
     return charsAndContext
 
@@ -39,7 +39,6 @@ On a small wooden table, a diverse group of fruits gathered. Benjamin Banana, th
 @app.route('/toDatabase', methods=['POST'])
 def toDatabase():
     return "hey!"
-
 
 if __name__ == '__main__':
     app.run(debug=True)
