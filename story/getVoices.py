@@ -11,7 +11,7 @@ import random
 
 # Set API Keys
 client = OpenAI(api_key="YOURAPIKEY")
-set_api_key("4302f309c82a5e2b4d157ed4d2ee7d3c") # SWITCH OUT WITH "YOUR APIKEY HERE"
+set_api_key("YOUR KEY") # SWITCH OUT WITH "YOUR APIKEY HERE"
 
 # Save the voices available to use via the ElevenLabs API
 voices = voices() 
