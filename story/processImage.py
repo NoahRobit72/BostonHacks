@@ -5,9 +5,9 @@ import base64
 import json
 import requests
 
-client = OpenAI(api_key = "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")          #openai key
+client = OpenAI(api_key = "YOUR KEY HERE")          #openai key
 
-asticaAPI_key = 'E354ADF8-0B77-4771-97EF-BB0767197E72D4507EA9-AA1A-45CE-B54B-A6F375A3E70A'  # visit https://astica.ai      #astica key
+asticaAPI_key = 'YOUR KEY HERE'  # visit https://astica.ai      #astica key
 asticaAPI_timeout = 25 # in seconds. "gpt" or "gpt_detailed" require increased timeouts
 asticaAPI_endpoint = 'https://vision.astica.ai/describe'
 asticaAPI_modelVersion = '2.1_full' # '1.0_full', '2.0_full', or '2.1_full'
