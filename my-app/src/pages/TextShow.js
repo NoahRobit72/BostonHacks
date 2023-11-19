@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { getDatabase, ref, child, get } from "firebase/database";
+import '../css/TextShow.css'; // Adjust the filename accordingly
+
 
 
 const YourComponent = () => {
@@ -59,10 +61,10 @@ const YourComponent = () => {
   }, [pollingInProgress, pollForImage]);
 
   return (
-    <div>
-      <h1>Your Component</h1>
-      <p>Status: {status}</p>
-      <p>{(() => {
+    <div className="container">
+      <h1>Canvas Chronicles</h1>
+      <p className="loading-status">
+        {(() => {
           if (status === '0') {
             return 'Loading...';
           } else {
@@ -70,7 +72,7 @@ const YourComponent = () => {
           }
         })()}
       </p>
-      {successData && <p>Success Data: {successData}</p>}
+      {successData && <p className="success-data">Success Data: {successData}</p>}
     </div>
   );
 };

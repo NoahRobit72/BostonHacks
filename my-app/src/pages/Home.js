@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Link} from 'react-router-dom';
+import '../css/Home.css'; // Adjust the filename accordingly
+
+
 
 export default function Home() {
     // State to store the random number
@@ -17,14 +20,9 @@ export default function Home() {
     };
 
     return (
-        <div>
+        <div className="container">
             <h1>Hi! This is Canvas Chronicles!</h1>
-            
-            {/* Display the random number */}
-            <p>Random Number: {randomNumber}</p>
-
-            {/* Link to /imageget with the stored random number as a query parameter */}
-            <Link to={`/imageget/${randomNumber}`} onClick={handleLinkClick}>
+                <Link to={`/imageget/${randomNumber}`} onClick={handleLinkClick}>
                 Click here to turn a simple drawing or illustration into a captivating full story for kids.
             </Link>
         </div>

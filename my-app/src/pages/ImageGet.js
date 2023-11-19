@@ -5,6 +5,9 @@ import React, { useRef, useEffect} from 'react';
 import {storage} from "../firebase_setup/firebase";
 import {ref, uploadString} from "firebase/storage";
 
+import '../css/ImageGet.css'; // Adjust the filename accordingly
+
+
 export default function ImagerGet() {
     const { imageNumber } = useParams();
 
@@ -84,15 +87,19 @@ export default function ImagerGet() {
               }
       };
     return (
-        <div>
-            <h1>Canvas Chronicles</h1>
-            <p>Random Number: {imageNumber}</p>
-            <div>
-                <video ref={videoRef} autoPlay />
-            </div>
-            <Link to={`/textshow/${imageNumber}`} onClick={captureImage}>Capture</Link>
-            <br></br>
-            <Link to="/">go back</Link>
+      <div className="container">
+      <h1>Canvas Chronicles</h1>
+      <div>
+        <video ref={videoRef} autoPlay />
       </div>
+      <Link to={`/textshow/${imageNumber}`} className="capture-button" onClick={captureImage}>
+        Capture
+      </Link>
+      <div className="link-container">
+        <Link to="/" className="goBack-link">
+          Go back
+        </Link>
+      </div>
+    </div>
   );
 }
