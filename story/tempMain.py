@@ -12,27 +12,8 @@ finalizedChars = []         # An array to store the characters into the ObjectCh
 
 def processImage():
     '''Take the user-inputted image and generate characters as well as a beginning context'''
-    #charsAndContext = genCharAndContext() (currently sampleOutput)
-    sampleOutput = """ 
-        Name: Benjamin Banana
-        Age Group: Adult
-        Gender: Man
-        Object: Banana
-        Personality: Cheerful, optimistic
-        Appearance: Bright yellow with a friendly smile
-
-        Name: Amelia Apple
-        Age Group: Teen
-        Gender: Woman
-        Object: Apple
-        Personality: Ambitious, determined
-        Appearance: Shiny red with a confident aura
-
-        Beginning Prompt:
-        On a small wooden table, a diverse group of fruits gathered. Benjamin Banana, the cheerful adult, and Amelia Apple, the ambitious teenager, stood side by side, among others who were yet to be named.
-        Their vibrant colors and distinct personalities made each fruit unique, just like their presence around the table. As the narrator, I couldn't help but wonder what adventures awaited these fruits beyond the confines of this ordinary setting.
-        Little did they know that fate had something extraordinary in store for them. It all started when a mischievous wind blew open the window, setting the stage for an unexpected journey that would forever change their lives.
-        """
+    #charsAndContext = genCharAndContext() (currently sampleOutput)#main()  
+    sampleOutput = main()
     
     sampleOutput = sampleOutput.strip()
     # Partition the output for just the characters
@@ -61,10 +42,11 @@ def processImage():
             voice = character.voice.name
         )
         play(testAudio)'''
+
+    generateStory(finalizedChars,sampleOutput)
         
 if __name__ == "__main__":
     start = time.time()
-    print("hello")
 
     processImage()
     generateStory(finalizedChars)
