@@ -57,7 +57,7 @@ export default function ImagerGet() {
           const imageDataUrl = canvas.toDataURL(); // Do not specify image format
           const newUrl = convertDataUrl(imageDataUrl);
           console.log(newUrl);
-          const imageRef = ref(storage,'images/image1');
+          const imageRef = ref(storage,'images/image2');
           uploadString(imageRef, newUrl, 'data_url').then(() => {
             alert("image uploaded")
           })
