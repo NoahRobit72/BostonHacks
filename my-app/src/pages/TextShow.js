@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Link } from "react-router-dom";
 import { getDatabase, ref, child, get } from "firebase/database";
 import '../css/TextShow.css'; // Adjust the filename accordingly
 
@@ -34,7 +35,7 @@ const YourComponent = () => {
 
   const handleSuccess = () => {
     const dbRef = ref(getDatabase());
-    get(child(dbRef, 'Canvas641')).then((snapshot) => {
+    get(child(dbRef, 'Canvas2')).then((snapshot) => {
       if (snapshot.exists()) {
         const data = snapshot.val();
         setSuccessData(data); // Save the data to state
@@ -67,12 +68,11 @@ const YourComponent = () => {
         {(() => {
           if (status === '0') {
             return 'Loading...';
-          } else {
-            return 'Finished!';
-          }
+          } 
         })()}
       </p>
-      {successData && <p className="success-data">Success Data: {successData}</p>}
+      {successData && <p className="success-data">{successData}</p>}
+      <Link to="/" className="goBack-link"> Return to start</Link>
     </div>
   );
 };

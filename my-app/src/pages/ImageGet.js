@@ -12,7 +12,6 @@ export default function ImagerGet() {
     const { imageNumber } = useParams();
 
     const videoRef = useRef();
-    const vdio = videoRef.current;
 
     useEffect(() => {
       const startWebcam = async () => {
@@ -54,12 +53,12 @@ export default function ImagerGet() {
       }
 
       const captureImage = () => {
-        if (vdio) {
+        if (videoRef.current) {
           const canvas = document.createElement('canvas');
-          canvas.width = vdio.videoWidth;
-          canvas.height = vdio.videoHeight;
+          canvas.width = videoRef.current.videoWidth;
+          canvas.height = videoRef.current.videoHeight;
           const context = canvas.getContext('2d');
-          context.drawImage(vdio, 0, 0, canvas.width, canvas.height);
+          context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
       
           // Now, 'canvas.toDataURL()' contains the captured image as a Base64-encoded string
           const imageDataUrl = canvas.toDataURL(); // Do not specify image format
@@ -69,7 +68,7 @@ export default function ImagerGet() {
           const imageRef = ref(storage,pathToSend);
           //
           uploadString(imageRef, newUrl, 'data_url').then(() => {
-            console.log('finished');
+            alert('finished');
           })
 
           const fetchString = `http://127.0.0.1:5000/getImage?imageName=Canvas${imageNumber}`;
